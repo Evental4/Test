@@ -24,38 +24,91 @@
 
 #include "TXLib.h"
 
+ struct Form
+ {
+    string text_queestion;
+    HDC pic_answer1;
+    string text_answer1;
+    HDC pic_answer2;
+    string text_answer2;
+    HDC pic_answer3;
+    string text_answer3;
+ 
+ }
+
+
 int main()
 {
 txCreateWindow (1100, 600);
 
-    HDC Kal=txLoadImage("шедэвр.bmp");
-    HDC Shed=txLoadImage("шедэвр_2.bmp");
-    HDC Kal_1=txLoadImage("kal.bmp");
+     Form queestion_buffer;
+     
+     Form queest1={"что из этого ШЕДЕВР?",txLoadImage("шедэвр.bmp"),"1",txLoadImage("шедэвр_2.bmp"),"2",txLoadImage("kal.bmp"),"3"} ;
+     Form queest2={"Кто из персоножей имеет путь Изобилия?",txLoadImage("5_star_air.bmp"),"Броня",
+     txLoadImage("4_star_fizic.bmp"),"Наташка",txLoadImage("Blaidic.bmp"),"Ишак"};
+    
 
+
+   
+
+
+
+
+     int n_queestion = 1;
+     int kol_queestion=2;
+
+      while(n_queestion <=kol_queestion)
+{
+      txSetColor (TX_BLACK);
+      txSetFillColor (TX_BLACK);
+      txClear();
+      txBegin();
+
+
+     if(n_queestion ==1) queestion_buffer=queest1
+     else if (n_queestion ==2) queestion_buffer=queest2
+    
+
+    //шаблон
     txSetColor (TX_WHITE);
     txSetFillColor (TX_TRANSPARENT);
     txRectangle (10, 10, 1090, 590);
 
+
+
     txSelectFont("Times New Roman",30);
-    txDrawText(0,0,1100,200,"что из этого ШЕДЕВР?");
+    txDrawText(0,0,1100,200,queestion_buffer.text_queestion.c_str());
 
     txRectangle (50, 200, 350, 450);
-    txBitBlt(txDC(),50, 200,300,250,Kal );
-    txDrawText(50, 450, 350, 550,"1");
+    txBitBlt(txDC(),50, 200,300,250,queestion_buffer. pic_answer1 );
+    txDrawText(50, 450, 350, 550,queestion_buffer.text_answer1.c_str());
 
     txRectangle (400, 200, 700, 450);
-    txBitBlt(txDC(),400, 200,300,250,Shed );
-    txDrawText(400, 450, 700, 550,"2");
+    txBitBlt(txDC(),400, 200,300,250,queestion_buffer. pic_answer2 );
+    txDrawText(400, 450, 700, 550, queestion_buffer.text_answer2.c_str());
 
     txRectangle (750, 200, 1050, 450);
-    txDrawText(750, 450, 1050, 550,"3");
-    txBitBlt(txDC(),750, 450,300,250,Kal_1 );
+    txDrawText(750, 450, 1050, 550,queestion_buffer.text_answer3.c_str());
+    txBitBlt(txDC(),750, 200,300,250, queestion_buffer.pic_answer3);
+
+     if(txMouseButtons()== 1 &&
+         txMouseX() > 50 && txMouseX() < 350 &&
+         txMouseY() > 250 && txMouseY() < 450 )
+         {
+         n_queestion ++;
+         }
+    txEnd();
+    txSleep(100);
 
 
-    txDeleteDC(Kal);
-    txDeleteDC(Kal_1);
-    txDeleteDC(Shed);
+}
 
+    txDeleteDC( pic1_answer1);
+    txDeleteDC( pic1_answer2);
+    txDeleteDC( pic1_answer3);
+    txDeleteDC( pic2_answer1);
+    txDeleteDC( pic2_answer2);
+    txDeleteDC( pic2_answer3);
 
 txTextCursor (false);
 return 0;
