@@ -47,6 +47,7 @@ txCreateWindow (1100, 600);
      Form queest2={"Кто из персоножей имеет путь Изобилия?",txLoadImage("5_star_air.bmp"),"Броня",
      txLoadImage("4_star_fizic.bmp"),"Наташка",txLoadImage("Blaidic.bmp"),"Ишак"};
 
+
      int n_queestion = 1;
      int kol_queestion=2;
 
@@ -86,10 +87,32 @@ txCreateWindow (1100, 600);
 
      if(txMouseButtons()== 1 &&
          txMouseX() > 50 && txMouseX() < 350 &&
-         txMouseY() > 250 && txMouseY() < 450 )
+         txMouseY() > 200 && txMouseY() < 450 )
          {
          n_queestion ++;
          }
+
+     if(txMouseButtons()== 1 &&
+         txMouseX() > 400 && txMouseX() < 700 &&
+         txMouseY() > 200 && txMouseY() < 450 )
+         {
+         n_queestion ++;
+         }
+
+     if(txMouseButtons()== 1 &&
+         txMouseX() > 750 && txMouseX() < 1050 &&
+         txMouseY() > 200 && txMouseY() < 450 )
+         {
+         n_queestion ++;
+         }
+
+//каким путем владеет клара
+//каким путем владеет гг в 1 форме
+//каким путем владеет химека
+//каким путем владеет фельт
+//каким путем владеет байлу
+//каким путем владеет серебряный волк
+
     txEnd();
     txSleep(100);
 

@@ -33,8 +33,8 @@
     string text_answer2;
     HDC pic_answer3;
     string text_answer3;
- 
- }
+
+ } ;
 
 
 int main()
@@ -42,17 +42,11 @@ int main()
 txCreateWindow (1100, 600);
 
      Form queestion_buffer;
-     
+
      Form queest1={"что из этого ШЕДЕВР?",txLoadImage("шедэвр.bmp"),"1",txLoadImage("шедэвр_2.bmp"),"2",txLoadImage("kal.bmp"),"3"} ;
      Form queest2={"Кто из персоножей имеет путь Изобилия?",txLoadImage("5_star_air.bmp"),"Броня",
      txLoadImage("4_star_fizic.bmp"),"Наташка",txLoadImage("Blaidic.bmp"),"Ишак"};
-    
-
-
-   
-
-
-
+     
 
      int n_queestion = 1;
      int kol_queestion=2;
@@ -65,9 +59,9 @@ txCreateWindow (1100, 600);
       txBegin();
 
 
-     if(n_queestion ==1) queestion_buffer=queest1
-     else if (n_queestion ==2) queestion_buffer=queest2
-    
+     if(n_queestion ==1) queestion_buffer=queest1;
+     else if (n_queestion ==2) queestion_buffer=queest2;
+
 
     //шаблон
     txSetColor (TX_WHITE);
@@ -93,22 +87,36 @@ txCreateWindow (1100, 600);
 
      if(txMouseButtons()== 1 &&
          txMouseX() > 50 && txMouseX() < 350 &&
-         txMouseY() > 250 && txMouseY() < 450 )
+         txMouseY() > 200 && txMouseY() < 450 )
          {
          n_queestion ++;
          }
+
+     if(txMouseButtons()== 1 &&
+         txMouseX() > 400 && txMouseX() < 700 &&
+         txMouseY() > 200 && txMouseY() < 450 )
+         {
+         n_queestion ++;
+         }
+
+     if(txMouseButtons()== 1 &&
+         txMouseX() > 750 && txMouseX() < 1050 &&
+         txMouseY() > 200 && txMouseY() < 450 )
+         {
+         n_queestion ++;
+         }
+
+ //каким путеь 
+
     txEnd();
     txSleep(100);
 
 
 }
 
-    txDeleteDC( pic1_answer1);
-    txDeleteDC( pic1_answer2);
-    txDeleteDC( pic1_answer3);
-    txDeleteDC( pic2_answer1);
-    txDeleteDC( pic2_answer2);
-    txDeleteDC( pic2_answer3);
+    txDeleteDC( queestion_buffer.pic_answer1);
+    txDeleteDC( queestion_buffer.pic_answer2);
+    txDeleteDC( queestion_buffer.pic_answer3);
 
 txTextCursor (false);
 return 0;
