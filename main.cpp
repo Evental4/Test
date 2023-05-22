@@ -27,6 +27,7 @@
  struct Form
  {
     string text_queestion;
+    int right_answer;
     HDC pic_answer1;
     string text_answer1;
     HDC pic_answer2;
@@ -36,6 +37,19 @@
 
  } ;
 
+ void draw_answer(int x,HDC pic_answer,string text_answer)
+ {
+    txRectangle (x, 200, x+300, 450);
+    txBitBlt(txDC(),x, 200,300,250, pic_answer );
+    txDrawText(x, 450, x+300, 550,text_answer.c_str());
+
+ }
+
+ bool Click_answer(int x)
+ {
+ return(txMouseButtons()== 1 && txMouseX()>x && txMouseX()<x+300 && txMouseY()>200 && txMouseY()<450 );
+
+ }
 
 int main()
 {
@@ -43,14 +57,14 @@ txCreateWindow (1100, 600);
 
      Form queestion_buffer;
 
-     Form queest1={"что из этого ШЕДЕВР?",txLoadImage("шедэвр.bmp"),"1",txLoadImage("шедэвр_2.bmp"),"2",txLoadImage("kal.bmp"),"3"} ;
-     Form queest2={"Кто из персоножей имеет путь Изобилия?",txLoadImage("5_star_air.bmp"),"Броня",
+     Form queest1={"что из этого ШЕДЕВР?",2,txLoadImage("шедэвр.bmp"),"1",txLoadImage("шедэвр_2.bmp"),"2",txLoadImage("kal.bmp"),"3"} ;
+     Form queest2={"Кто из персоножей имеет путь Изобилия?",2,txLoadImage("5_star_air.bmp"),"Броня",
      txLoadImage("4_star_fizic.bmp"),"Наташка",txLoadImage("Blaidic.bmp"),"Ишак"};
 
 
      int n_queestion = 1;
      int kol_queestion=2;
-
+     int kol_right_answer=0;
       while(n_queestion <=kol_queestion)
 {
       txSetColor (TX_BLACK);
@@ -58,51 +72,36 @@ txCreateWindow (1100, 600);
       txClear();
       txBegin();
 
-
      if(n_queestion ==1) queestion_buffer=queest1;
      else if (n_queestion ==2) queestion_buffer=queest2;
-
 
     //шаблон
     txSetColor (TX_WHITE);
     txSetFillColor (TX_TRANSPARENT);
     txRectangle (10, 10, 1090, 590);
 
-
-
     txSelectFont("Times New Roman",30);
     txDrawText(0,0,1100,200,queestion_buffer.text_queestion.c_str());
 
-    txRectangle (50, 200, 350, 450);
-    txBitBlt(txDC(),50, 200,300,250,queestion_buffer. pic_answer1 );
-    txDrawText(50, 450, 350, 550,queestion_buffer.text_answer1.c_str());
+    draw_answer(50,queestion_buffer.pic_answer1 ,queestion_buffer.text_answer1 );
+    draw_answer(400,queestion_buffer.pic_answer2 ,queestion_buffer.text_answer2 );
+    draw_answer(750,queestion_buffer.pic_answer3 ,queestion_buffer.text_answer3 );
 
-    txRectangle (400, 200, 700, 450);
-    txBitBlt(txDC(),400, 200,300,250,queestion_buffer. pic_answer2 );
-    txDrawText(400, 450, 700, 550, queestion_buffer.text_answer2.c_str());
-
-    txRectangle (750, 200, 1050, 450);
-    txDrawText(750, 450, 1050, 550,queestion_buffer.text_answer3.c_str());
-    txBitBlt(txDC(),750, 200,300,250, queestion_buffer.pic_answer3);
-
-     if(txMouseButtons()== 1 &&
-         txMouseX() > 50 && txMouseX() < 350 &&
-         txMouseY() > 200 && txMouseY() < 450 )
+     if( Click_answer(50) )
          {
+         if(queestion_buffer.right_answer == 1) kol_right_answer++;
          n_queestion ++;
          }
 
-     if(txMouseButtons()== 1 &&
-         txMouseX() > 400 && txMouseX() < 700 &&
-         txMouseY() > 200 && txMouseY() < 450 )
+     if( Click_answer(400) )
          {
+         if(queestion_buffer.right_answer == 2) kol_right_answer++;
          n_queestion ++;
          }
 
-     if(txMouseButtons()== 1 &&
-         txMouseX() > 750 && txMouseX() < 1050 &&
-         txMouseY() > 200 && txMouseY() < 450 )
+     if( Click_answer(750))
          {
+         if(queestion_buffer.right_answer == 3) kol_right_answer++;
          n_queestion ++;
          }
 
@@ -114,10 +113,17 @@ txCreateWindow (1100, 600);
 //каким путем владеет серебряный волк
 
     txEnd();
-    txSleep(100);
+    txSleep(90);
 
 
 }
+    txSetColor (TX_WHITE);
+    txSetFillColor (TX_BLACK);
+    txClear();
+    char par[50];
+    sprintf(par,"количиство правильных ответов-%d",kol_right_answer) ;
+    txDrawText(0,0,1100,600,par);
+
 
     txDeleteDC( queestion_buffer.pic_answer1);
     txDeleteDC( queestion_buffer.pic_answer2);
@@ -126,4 +132,3 @@ txCreateWindow (1100, 600);
 txTextCursor (false);
 return 0;
 }
-
