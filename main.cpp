@@ -1,28 +1,8 @@
-//========================================================================
-//! @file       Main.cpp
-//{=======================================================================
-//!
-//! @brief      <Заголовок>\n
-//! @brief      <Подзаголовок>
-//!
-//! @version    [Version 0.01 alpha, build 1]
-//! @author     Copyright (C) <Автор>, <Год> (<Имя> <Почта>)
-//! @date       <Дата>
-//!
-//! @par        Протестировано
-//!           - (TODO: список платформ)
-//!
-//! @todo     - (TODO: список ближайших планов по этому файлу)
-//!
-//! @bug      - (TODO: список найденных ошибок в этом файле)
-//!
-//! @par        История изменений файла
-//!           - Версия 0.01 Alpha
-//!             - Только что созданный файл
-//!
-//}=======================================================================
 
 #include "TXLib.h"
+#include <fstream>
+
+using namespace std;
 
  struct Form
  {
@@ -42,7 +22,6 @@
     txRectangle (x, 200, x+300, 450);
     txBitBlt(txDC(),x, 200,300,250, pic_answer );
     txDrawText(x, 450, x+300, 550,text_answer.c_str());
-
  }
 
  bool Click_answer(int x)
@@ -54,26 +33,69 @@
 int main()
 {
 txCreateWindow (1100, 600);
+setlocale (LC_ALL , "Russian");
 
      Form queestion_buffer;
 
-     Form queest1={"что из этого ШЕДЕВР?",2,txLoadImage("шедэвр.bmp"),"1",txLoadImage("шедэвр_2.bmp"),"2",txLoadImage("kal.bmp"),"3"} ;
-     Form queest2={"Кто из персоножей имеет путь Изобилия?",2,txLoadImage("5_star_air.bmp"),"Броня",
-     txLoadImage("4_star_fizic.bmp"),"Наташка",txLoadImage("Blaidic.bmp"),"Ишак"};
+     Form queest[10];
 
-
+     string str;
      int n_queestion = 1;
      int kol_queestion=2;
      int kol_right_answer=0;
-      while(n_queestion <=kol_queestion)
+     int n=0;
+
+    ifstream file("вопросы.txt");
+
+    while(file.good())
+{
+    getline(file,str);
+    int pos2 = -1;
+    int pos1 = pos2+1;
+
+    pos2 =str.find(",",pos1);
+    queest[n].text_queestion= str.substr(pos1, pos2-pos1);
+
+    pos1 =pos2+1;
+    pos2 =str.find(",",pos1);
+    queest[n].right_answer =atoi((str.substr(pos1, pos2-pos1)).c_str());
+
+    pos1 =pos2+1;
+    pos2 =str.find(",",pos1);
+    queest[n].pic_answer1=txLoadImage((str.substr(pos1, pos2-pos1)).c_str());
+
+    pos1 =pos2+1;
+    pos2 =str.find(",",pos1);
+    queest[n].text_answer1= str.substr(pos1, pos2-pos1);
+
+    pos1 =pos2+1;
+    pos2 =str.find(",",pos1);
+    queest[n].pic_answer2 =txLoadImage((str.substr(pos1, pos2-pos1)).c_str());
+
+    pos1 =pos2+1;
+    pos2 =str.find(",",pos1);
+    queest[n].text_answer2=str.substr(pos1, pos2-pos1);
+
+    pos1 =pos2+1;
+    pos2 =str.find(",",pos1);
+    queest[n].pic_answer3 =txLoadImage((str.substr(pos1, pos2-pos1)).c_str());
+
+    pos1 =pos2+1;
+    pos2 =str.find(",",pos1);
+    queest[n].text_answer3=str.substr(pos1, pos2-pos1);
+
+    n++;
+}
+
+while(n_queestion <=kol_queestion)
 {
       txSetColor (TX_BLACK);
       txSetFillColor (TX_BLACK);
       txClear();
       txBegin();
 
-     if(n_queestion ==1) queestion_buffer=queest1;
-     else if (n_queestion ==2) queestion_buffer=queest2;
+     if(n_queestion ==1) queestion_buffer=queest[0];
+     else if (n_queestion ==2) queestion_buffer=queest[1];
 
     //шаблон
     txSetColor (TX_WHITE);
@@ -124,10 +146,10 @@ txCreateWindow (1100, 600);
     sprintf(par,"количиство правильных ответов-%d",kol_right_answer) ;
     txDrawText(0,0,1100,600,par);
 
-
     txDeleteDC( queestion_buffer.pic_answer1);
     txDeleteDC( queestion_buffer.pic_answer2);
     txDeleteDC( queestion_buffer.pic_answer3);
+
 
 txTextCursor (false);
 return 0;
